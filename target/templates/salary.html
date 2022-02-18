@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>邮件模板</title>
+</head>
+<body>
+<p th:text="${username}"></p>
+
+<pre class="content">
+お疲れ様です。
+人事総務部　人事総務室です。
+
+<span th:text="${month}"></span>月度の給与明細が確定いたしましたのでご連絡申し上げます。
+つきましては、添付ファイルをご確認ください。
+
+
+（ＳＥＳの方へ）
+勤怠表、定期券代及び交通費精算など、月末報告書に関する提出は、
+メール送信ではなく、可能な限り月末報告書システムに入力して頂けますよう
+お願いいたします。
+
+※月末報告書システムのＵＲＬ　https://kinmu.nisshin-g.co.jp/Kinmu/
+
+
+【健康保険・厚生年金加入の皆様へ】
+<span th:text="${year}"></span>年度の全国健康保険協会（協会けんぽ）の健康保険料率および
+介護保険料率が、3月分（4月支払い給与分）から改定されました。
+https://www.kyoukaikenpo.or.jp/g7/cat330/sb3130/r3/20205/
+
+※皆様がお住まいの都道府県ではなく、東京都の料率が適用されます。
+詳細な金額については、給与明細にて各自ご確認をお願いします。
+
+
+なお、各問合せについては、以下のメールアドレスへお願いします。
+
+・金額等内容、勤怠の時間、欠勤、有給休暇の残数に関するお問合せ先
+（氏名前の４桁の番号をお知らせください）
+　社員番号　0001～2999　(人事)jinji@smartcompany.jp
+　社員番号　5000～6999　(HR室)hr-dev-cn@smartcompany.jp
+
+・賞与に関する問い合わせ
+　(松井副社長)matsui@smartcompany.jp
+
+以上、宜しくお願いいたします。
+</pre>
+
+
+</body>
+</html>

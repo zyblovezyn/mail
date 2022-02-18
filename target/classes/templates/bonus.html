@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>邮件模板</title>
+</head>
+<body>
+<p th:text="${username}"></p>
+
+<pre class="content">
+お疲れ様です。
+人事総務部　人事総務室です。
+
+<span th:text="${period}"></span>賞与明細が確定いたしましたのでご連絡申し上げます。
+つきましては、添付ファイルをご確認ください。
+
+****〈ご連絡〉***********************
+賞与についての疑問点につきましては、以下のメールアドレスへお問い合わせください。
+
+・賞与に関する問い合わせ
+　(松井副社長)matsui@nisshin-sci.co.jp
+
+以上、宜しくお願いいたします。
+</pre>
+
+</body>
+</html>

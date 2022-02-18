@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スマカン給与明細管理システム</title>
+    <style type="text/css">
+        *{margin:0; padding:0;}
+        #header{background-color:white; display:block; line-height:70px; font-size:16px;}
+        #header img{vertical-align: middle;margin: 10px 20px;}
+        #header label{font-size: large;vertical-align:middle;}
+        #menu{height:820px;width:10%;float:left;background-color:#eeeeee;}
+        #menu_tbl{border-spacing: 10px;}
+        #menu_tbl tr td{border-radius:10px;}
+        .menu_title{height: 50px;font-size: large;background-color: #FC7318;}
+        .submenu{height: 50px;text-align: center;}
+        .submenu:hover{cursor:pointer; background-color: white;}
+        .active{background-color: white;}
+        #content{height: 820px;width:89%;float:right;}
+        #btnDiv{height: 50px;margin-bottom: 10px;background-color:#EEEEEE;}
+        #btnDiv button{height: 30px;width: 100px;margin: 10px 20px;background-color: #FC7318; color: white;font-size: medium;border: 0;float: right;}
+        #userinfo{height: 760px;background-color:#EEEEEE;}
+        #userList{border-spacing:5px;}
+        #userList tr th{height: 40px;}
+        #userList tr td{background-color: white;text-align: center;border-radius:5px;}
+        #clearBtn:hover{cursor:pointer;background:#ffb34f;}
+        #sendBtn:hover{cursor:pointer;background:#ffb34f;}
+        #nendo{float: right;margin-right: 50px;}
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        $(function(){
+            //画面初期表示：年度
+            $.ajax({
+                url: 'http://localhost:8080/getDataStr',
+                type: 'GET',
+                dataType: 'text',
+                success:function (result) {
+                    $("#nendo").append("<b>" + result + "</b>");
+                }
+            });
+
+            var menukb = "";
+            $('.submenu').on('click',function () {
+                $(this).addClass('active');
+                $(this).siblings().removeClass('active');
+                menukb = $(this).attr("id");
+                var urlName = '';
+                if(menukb == "kyuyo"){
+                    urlName = 'http://localhost:8080/getSalaryStaffs/';
+                }else if(menukb == "syoyo"){
+                    urlName = 'http://localhost:8080/getBonusStaffs/';
+                }else if(menukb == "gensen"){
+                    urlName = 'http://localhost:8080/getSourceTicketStaffs/';
+                }else if(menukb == "status"){
+                    urlName = 'http://localhost:8080/getStaffStatus/';
+                }
+
+                $.ajax({
+                    url: urlName,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    success:function(result){
+                        //テーブル一覧を空にする
+                        $("#J_TbData").empty();
+                        for( var i = 0; i < result.length; i++ ) {
+                            //動的にテーブルの中にデータを追加する
+                            var $trTemp = $("<tr></tr>");
+                            $trTemp.append("<td>"+ result[i].employeeId +"</td>");
+                            $trTemp.append("<td>"+ result[i].name +"</td>");
+                            $trTemp.append("<td>"+ result[i].email +"</td>");
+                            $trTemp.append("<td>"+ result[i].status +"</td>");
+                            $trTemp.appendTo("#J_TbData");
+                        }
+                    } ,
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+            });
+
+            //送信イベント処理
+            $('#sendBtn').on('click',function(){
+                var sendUrl = '';
+                if(menukb == "kyuyo"){
+                    sendUrl = 'http://localhost:8080/sendSalaryMail/';
+                }else if(menukb == "syoyo"){
+                    sendUrl = 'http://localhost:8080/sendBonusMail/';
+                }else if(menukb == "gensen"){
+                    sendUrl = 'http://localhost:8080/sendSourceTicketMail/';
+                }
+                
+                $.ajax({
+                    url: sendUrl,
+                    type: 'GET',
+                    dataType: 'text',
+                    success:function(result){
+                        alert("送信済み");
+                    } ,
+                    error:function(err){
+                        alert(result);
+                    }
+                });
+            });
+
+            //結果クリアイベント処理
+            $('#clearBtn').on('click',function () {
+                $.ajax({
+                    url: 'http://localhost:8080/clearStaffStatus/',
+                    type: 'GET',
+                    dataType: 'text',
+                    success:function(result){
+                        $("#J_TbData").empty();
+                        alert("送信結果クリア済み");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header">
+        <img src="logo.svg" height="50" width="180"/>
+        <label><strong>スマカン給与明細管理システム</strong></label>
+        <label id="nendo"></label>
+    </div>
+
+    <div id="menu">
+        <table id="menu_tbl" style="width: 100%;">
+            <tr class="menu_title"><th><label>メニュー</label></th></tr>
+            <tr class="submenu" id="kyuyo"><td>給与明細</td></tr>
+            <tr class="submenu" id="syoyo"><td>賞与明細</td></tr>
+            <tr class="submenu" id="gensen"><td>源泉徴収票</td></tr>
+            <tr class="submenu" id="status"><td>結　果</td></tr>
+        </table>
+    </div>
+
+    <div id="content">
+        <div id="btnDiv">
+            <label style="line-height: 50px;margin-left: 20px;"><b>社員情報一覧</b></label>
+            <button id="clearBtn">結果クリア</button>
+            <button id="sendBtn">送　信</button>
+        </div>
+        <div id="userinfo">
+            <table id="userList">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">ユーザーID</th>
+                        <th style="width: 10%;">ユーザー名</th>
+                        <th style="width: 30%;">メールアドレス</th>
+                        <th style="width: 10%;">状態</th>
+                    </tr>
+                </thead>
+                <tbody id="J_TbData"></tbody>
+            </table>
+        </div>
+    </div>
+    <div id="footer" style="background-color:#FC7318;height: 36px;clear:both;text-align:center;line-height: 36px;">
+        © 2021 SmartCompany Co. Ltd.
+    </div>
+</body>
+</html>

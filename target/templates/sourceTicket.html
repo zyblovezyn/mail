@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>邮件模板</title>
+</head>
+<body>
+<p th:text="${username}"></p>
+
+<pre class="content">
+お疲れ様です。
+人事総務部　人事総務室です。
+
+<!--令和2年度発行の源泉徴収票をお送りしますので、-->
+令和<span th:text="${jpyear}"></span>年度発行の源泉徴収票をお送りしますので、
+添付ファイルをご確認ください。
+
+
+※システム出力されました源泉徴収票
+の社印押印を省略できるようになっているため省略しております。
+確定申告など行政手続きでも認められておりますのでご安心ください。
+
+
+なお、各問合せについては、以下のメールアドレスへお願いします。
+
+・年末調整、源泉徴収票に関するお問合せ先
+（氏名前の４桁の番号をお知らせください）
+　
+社員番号　0001～1999　(人事総務室)roumu2@nisshin-sci.co.jp
+社員番号　5000～6999　(HR室)hr-dev-cn@nisshin-sci.co.jp
+
+
+以上、宜しくお願いいたします。
+</pre>
+</body>
+</html>
